@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Platforms>x64;AnyCPU</Platforms>
+    <StartupObject>HidReportInspector.App</StartupObject>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <RootNamespace>HidReportInspector</RootNamespace>
+    <AssemblyName>HidReportInspector</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>TRACE;WIN64;</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\wrench_screw_driver.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\wrench_screw_driver.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="HidLibrary\" />
+  </ItemGroup>
+
+</Project>

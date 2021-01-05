@@ -1,0 +1,51 @@
+﻿<Window x:Class="HidReportInspector.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HidReportInspector"
+        xmlns:localViewModels="clr-namespace:HidReportInspector.ViewModels"
+        mc:Ignorable="d"
+        Title="HID Report Inspector" Height="450" Width="800" Closing="Window_Closing">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem x:Name="exitMenuItem" Header="Exit" Click="ExitMenuItem_Click" />
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem x:Name="updateUsbIdsMenuItem" Header="Update VID/PID list from Internet" Click="UpdateUsbIdsMenuItem_Click" />
+                <MenuItem x:Name="rescanHardwareMenuItem" Header="Re-scan for hardware changes" Click="RescanHardwareMenuItem_Click" />
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem x:Name="aboutMenuItem" Header="About" Click="AboutMenuItem_Click" />
+            </MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.25*" MinWidth="100" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="4.75*" />
+            </Grid.ColumnDefinitions>
+            <TreeView x:Name="hidDeviceTreeView" Grid.Row="0" Grid.Column="0" BorderBrush="{x:Null}" ItemsSource="{Binding VidDeviceGroup}" SelectedItemChanged="HidDeviceTreeView_SelectedItemChanged">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type localViewModels:TreeViewVIDGroup}" ItemsSource="{Binding PidGroupList}">
+                        <TextBlock Text="{Binding DisplayName}" />
+                    </HierarchicalDataTemplate>
+
+                    <HierarchicalDataTemplate DataType="{x:Type localViewModels:TreeViewPIDGroup}" ItemsSource="{Binding HidDevices}">
+                        <TextBlock Text="{Binding DisplayName}" />
+                    </HierarchicalDataTemplate>
+
+                    <HierarchicalDataTemplate DataType="{x:Type localViewModels:TreeViewHidDeviceInfo}">
+                        <TextBlock Text="{Binding DisplayName}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
+            </TreeView>
+            <GridSplitter Grid.Row="0" Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="#FFC9C9C9" />
+            <local:HIDDeviceViewControl x:Name="deviceViewControl" Grid.Row="0" Grid.Column="2" />
+        </Grid>
+    </DockPanel>
+</Window>

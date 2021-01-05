@@ -1,0 +1,15 @@
+﻿<Application x:Class="HidReportInspector.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:HidReportInspector"
+             StartupUri="MainWindow.xaml" Startup="Application_Startup">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Window}" BasedOn="{StaticResource {x:Type Window}}">
+                <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+                <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />
+                <Setter Property="TextOptions.TextHintingMode" Value="Fixed" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
