@@ -52,10 +52,11 @@ namespace HidReportInspector.ViewModels
         private HidDeviceReader deviceReader;
         public List<HidDeviceReader.FeatureReport> FeatureReportData { get => deviceReader.CachedFeatureData; }
 
-        private List<string> formattedFeatureReportData = new List<string>();
-        public List<string> FormattedFeatureReportData
+        private List<FeatureReportFormat> featureReportOutputList =
+            new List<FeatureReportFormat>();
+        public List<FeatureReportFormat> FeatureReportOutputList
         {
-            get => formattedFeatureReportData;
+            get => featureReportOutputList;
         }
 
         private ReportBytesContainer reportBytesContainer;
@@ -90,24 +91,20 @@ namespace HidReportInspector.ViewModels
 
         private void FormatFeatureReportData()
         {
-            formattedFeatureReportData.Clear();
+            featureReportOutputList.Clear();
 
+            //int i = 0;
             foreach(HidDeviceReader.FeatureReport featureReport in deviceReader.CachedFeatureData)
             {
-                StringBuilder builder = new StringBuilder();
-                foreach(byte currentByte in featureReport.ReportBytes)
-                {
-                    builder.AppendFormat("{0,6:D}", currentByte);
-                }
-                
-                formattedFeatureReportData.Add(builder.ToString());
-            }
+                FeatureReportFormat tempFeature = new FeatureReportFormat(featureReport);
+                featureReportOutputList.Add(tempFeature);
 
-            /*foreach(string line in formattedFeatureReportData)
-            {
-                Debug.WriteLine(line);
+                //byte[] tempBytes = featureReport.ReportBytes.ToArray();
+                //string base64String = Convert.ToBase64String(tempBytes);
+                //Debug.WriteLine(i);
+                //Debug.WriteLine(base64String);
+                //i++;
             }
-            */
         }
 
         private void PrepareReportBytesDisplay(HidDeviceReader reader)
@@ -177,6 +174,34 @@ namespace HidReportInspector.ViewModels
                     }
                 }
             }
+        }
+    }
+
+    public class FeatureReportFormat
+    {
+        private HidDeviceReader.FeatureReport featureReportData;
+        public HidDeviceReader.FeatureReport FeatureReportData { get => featureReportData; }
+
+        public int FeatureID { get => featureReportData.ReportID; }
+
+        private string formattedReportOutput;
+        public string FormattedReportOutput { get => formattedReportOutput; }
+
+        public FeatureReportFormat(HidDeviceReader.FeatureReport reportData)
+        {
+            featureReportData = reportData;
+            PrepareViewOutput();
+        }
+
+        public void PrepareViewOutput()
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (byte currentByte in featureReportData.ReportBytes)
+            {
+                builder.AppendFormat("{0,6:D}", currentByte);
+            }
+
+            formattedReportOutput = builder.ToString();
         }
     }
 

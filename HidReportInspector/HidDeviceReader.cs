@@ -74,7 +74,6 @@ namespace HidReportInspector
                 if (!result)
                 {
                     Array.Clear(reportData, 0, reportData.Length);
-                    reportData[0] = (byte)i;
                 }
 
                 FeatureReport currentReport = new FeatureReport()

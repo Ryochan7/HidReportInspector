@@ -70,12 +70,26 @@
 
                 <StackPanel Margin="0,4,0,0">
                     <Label Content="Feature Reports" ContentStringFormat="{}{0}:" Padding="0,5,5,5" />
-                    <ListView ItemsSource="{Binding FormattedFeatureReportData}" ScrollViewer.CanContentScroll="False" MaxHeight="200">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding .}" TextAlignment="Left" FontFamily="Consolas" />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
+                    <ListView ItemsSource="{Binding FeatureReportOutputList}" ScrollViewer.CanContentScroll="False" MaxHeight="200">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="ID" Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=FeatureID}" FontWeight="Bold" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="Auto">
+                                    <GridViewColumnHeader Content="Bytes" HorizontalContentAlignment="Left" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=FormattedReportOutput}" TextAlignment="Left" FontFamily="Consolas" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
                     </ListView>
                 </StackPanel>
 
