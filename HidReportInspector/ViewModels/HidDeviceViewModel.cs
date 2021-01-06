@@ -123,7 +123,7 @@ namespace HidReportInspector.ViewModels
             using (StreamWriter sw = new StreamWriter(filepath))
             {
                 DeviceInfoReport infoReport = new DeviceInfoReport(hidDevice);
-                DeviceReportExport exportReport = new DeviceReportExport(infoReport, reportBytesContainer);
+                DeviceReportExport exportReport = new DeviceReportExport(infoReport, reportBytesContainer, featureReportOutputList);
 
                 JsonSerializerOptions options = new JsonSerializerOptions()
                 {
@@ -180,17 +180,27 @@ namespace HidReportInspector.ViewModels
     public class FeatureReportFormat
     {
         private HidDeviceReader.FeatureReport featureReportData;
+        [JsonIgnore]
         public HidDeviceReader.FeatureReport FeatureReportData { get => featureReportData; }
 
         public int FeatureID { get => featureReportData.ReportID; }
 
         private string formattedReportOutput;
+        [JsonIgnore]
         public string FormattedReportOutput { get => formattedReportOutput; }
+
+        private string base64ReportString;
+        [JsonPropertyName("ReportBytes")]
+        public string Base64ReportString
+        {
+            get => base64ReportString;
+        }
 
         public FeatureReportFormat(HidDeviceReader.FeatureReport reportData)
         {
             featureReportData = reportData;
             PrepareViewOutput();
+            base64ReportString = Base64String();
         }
 
         public void PrepareViewOutput()
@@ -202,6 +212,15 @@ namespace HidReportInspector.ViewModels
             }
 
             formattedReportOutput = builder.ToString();
+        }
+
+        public string Base64String()
+        {
+            byte[] tempBytes = featureReportData.ReportBytes.ToArray();
+            string base64String = Convert.ToBase64String(tempBytes);
+            //Debug.WriteLine(featureReportData.ReportID);
+            //Debug.WriteLine(base64String);
+            return base64String;
         }
     }
 
@@ -267,14 +286,23 @@ namespace HidReportInspector.ViewModels
         [JsonPropertyName("Device")]
         public DeviceInfoReport InfoReport { get => infoReport; }
 
+        private List<FeatureReportFormat> featureReportList;
+        [JsonPropertyName("FeatureReports")]
+        public List<FeatureReportFormat> FeatureReportList
+        {
+            get => featureReportList;
+        }
+
         private ReportBytesContainer bytesContainer;
         [JsonPropertyName("ReportLog")]
         public ReportBytesContainer BytesContainer { get => bytesContainer; }
 
-        public DeviceReportExport(DeviceInfoReport report, ReportBytesContainer reportBytes)
+        public DeviceReportExport(DeviceInfoReport report,
+            ReportBytesContainer reportBytes, List<FeatureReportFormat> featureReports)
         {
             infoReport = report;
             this.bytesContainer = reportBytes;
+            featureReportList = featureReports;
         }
     }
 
