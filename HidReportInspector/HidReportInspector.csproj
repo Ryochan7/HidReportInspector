@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Platforms>x64;AnyCPU</Platforms>
+    <Platforms>x64</Platforms>
     <StartupObject>HidReportInspector.App</StartupObject>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
@@ -12,10 +12,19 @@
     <RootNamespace>HidReportInspector</RootNamespace>
     <AssemblyName>HidReportInspector</AssemblyName>
     <Version>0.0.1</Version>
+    <Authors>Ryochan7</Authors>
+    <Company />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>TRACE;WIN64;</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <ErrorReport>none</ErrorReport>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
